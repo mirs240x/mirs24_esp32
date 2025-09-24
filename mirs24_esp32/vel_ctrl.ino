@@ -77,10 +77,10 @@ void vel_ctrl_set() {
   // ledcのPWM設定
   pinMode(PIN_DIR_R, OUTPUT);
   pinMode(PIN_DIR_L, OUTPUT);
-  ledcSetup(r_Channel, pwmFrequency, pwmResolution);
-  ledcSetup(l_Channel, pwmFrequency, pwmResolution);
-  ledcAttachPin(PIN_PWM_R, r_Channel);
-  ledcAttachPin(PIN_PWM_L, l_Channel);
+  //ledcSetClockSoure(r_Channel, pwmFrequency, pwmResolution);
+  //ledcSetup(l_Channel, pwmFrequency, pwmResolution);
+  ledcAttach(PIN_PWM_R, pwmFrequency, pwmResolution);
+  ledcAttach(PIN_PWM_L, pwmFrequency, pwmResolution);
 
   curr_vel_msg.data.size = 2; // メッセージ配列のサイズを2に設定
   curr_vel_msg.data.data = (double *)malloc(enc_msg.data.size * sizeof(double)); // 配列のメモリを確保
