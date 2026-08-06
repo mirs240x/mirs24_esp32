@@ -68,19 +68,17 @@ void PID_control(){
     l_pwm = 0; 
   }
 
-  //  pwm出力
-  ledcWrite(r_Channel, uint8_t(r_pwm));
-  ledcWrite(l_Channel, uint8_t(l_pwm));
+  //  pwm出力 (ESP32 core v3.x: 第1引数はピン番号)
+  ledcWrite(PIN_PWM_R, uint8_t(r_pwm));
+  ledcWrite(PIN_PWM_L, uint8_t(l_pwm));
 }
 
 void vel_ctrl_set() {
-  // ledcのPWM設定
+  // ledcのPWM設定 (ESP32 core v3.x: ledcAttach に統合)
   pinMode(PIN_DIR_R, OUTPUT);
   pinMode(PIN_DIR_L, OUTPUT);
-  ledcSetup(r_Channel, pwmFrequency, pwmResolution);
-  ledcSetup(l_Channel, pwmFrequency, pwmResolution);
-  ledcAttachPin(PIN_PWM_R, r_Channel);
-  ledcAttachPin(PIN_PWM_L, l_Channel);
+  ledcAttach(PIN_PWM_R, pwmFrequency, pwmResolution);
+  ledcAttach(PIN_PWM_L, pwmFrequency, pwmResolution);
 
   curr_vel_msg.data.size = 2; // メッセージ配列のサイズを2に設定
   curr_vel_msg.data.data = (double *)malloc(enc_msg.data.size * sizeof(double)); // 配列のメモリを確保

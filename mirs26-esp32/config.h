@@ -27,8 +27,6 @@ double LKD = 8.0;
 double WHEEL_RADIUS = 0.04;  //ホイール径
 double WHEEL_BASE = 0.38;  //車輪間幅
 
-// PWM設定
-const int32_t r_Channel = 0;        // PWMチャンネル
-const int32_t l_Channel = 1;
+// PWM設定 (ESP32 core v3.x: チャンネルは自動管理のため不要)
 const int32_t pwmFrequency = 5000; // PWM周波数 (5kHz)
 const int32_t pwmResolution = 8;   // PWM分解能 (8ビット = 0-255)

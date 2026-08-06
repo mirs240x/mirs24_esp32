@@ -1,6 +1,4 @@
 #include <micro_ros_arduino.h>
-
-#include <micro_ros_arduino.h>
 #include <stdio.h>
 #include <rcl/rcl.h>
 #include <rcl/error_handling.h>

@@ -1,3 +1,7 @@
+#ifndef RCCHECK
+#define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){while(1){};}}
+#endif
+
 void ros_setup(){
   //micro-rosのセッティング
   set_microros_transports();
@@ -7,8 +11,8 @@ void ros_setup(){
 
   //nodeの作成とros_domein_idの作成
   //rosid_setup_foxy();
-  rosid_setup_humble();
-  //rosid_setup_jazzy();
+  // rosid_setup_humble();
+  rosid_setup_jazzy();
 
   //サブスクライバ、パブリッシャー、サービスの宣言
   rclc_publisher_init_default(
@@ -86,7 +90,7 @@ void rosid_setup_foxy(){
   rclc_node_init_with_options(&node, "ESP32_node", "", &support, &node_ops);
 }
 */
-
+/*
 void rosid_setup_humble(){
   rcl_init_options_t init_options;
   init_options = rcl_get_zero_initialized_init_options();
@@ -99,13 +103,20 @@ void rosid_setup_humble(){
   // create node
   rclc_node_init_default(&node, "ESP32_node", "", &support);
 }
-
-/*
-void rosid_setup_jazzy(){
-  rcl_node_options_t node_ops;
-  node_ops = rcl_node_get_default_options();
-  node_ops.domain_id = ROS_DOMAIN_ID;
-  rclc_support_init(&support, 0, NULL, &allocator);
-  rclc_node_init_with_options(&node, "ESP32_node", "", &support, &node_ops);
-}
 */
+void rosid_setup_jazzy(){
+  allocator = rcl_get_default_allocator();
+
+  // init_options を作成してドメインIDを設定
+  rcl_init_options_t init_options = rcl_get_zero_initialized_init_options();
+  RCCHECK(rcl_init_options_init(&init_options, allocator));
+  RCCHECK(rcl_init_options_set_domain_id(&init_options, ROS_DOMAIN_ID));
+
+  // support_init_with_options を使って init_options を渡す
+  RCCHECK(rclc_support_init_with_options(&support, 0, NULL, &init_options, &allocator));
+
+  // ノードオプションはデフォルトのままでOK(domain_idメンバーがない)
+  rcl_node_options_t node_ops = rcl_node_get_default_options();
+
+  RCCHECK(rclc_node_init_with_options(&node, "ESP32_node", "", &support, &node_ops));
+}
