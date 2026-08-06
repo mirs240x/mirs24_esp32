@@ -38,8 +38,9 @@ void encoder_open() {
   attachInterrupt(PIN_ENC_A_L, enc_change_l, CHANGE);
   attachInterrupt(PIN_ENC_A_R, enc_change_r, CHANGE);
 
-  enc_msg.data.size = 2; // メッセージ配列のサイズを3に設定
-  enc_msg.data.data = (int32_t *)malloc(enc_msg.data.size * sizeof(int32_t)); // 配列のメモリを確保
+  enc_msg.data.capacity = 2;
+  enc_msg.data.size = 2;
+  enc_msg.data.data = (int32_t *)malloc(enc_msg.data.capacity * sizeof(int32_t)); // 配列のメモリを確保
   enc_msg.data.data[0] = 0;
   enc_msg.data.data[1] = 0;
 }

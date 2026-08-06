@@ -3,16 +3,36 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {  
   RCLC_UNUSED(last_call_time);
   if (timer != NULL) {
+    if (rc_b_pwm > 1700) {
+      if (rc_a_pwm > 1520 && rc_a_pwm <= 2200) {
+        l_vel_cmd = (rc_a_pwm - 1520) * MAX_MANUAL_VEL / (2100 - 1520);
+      } else if (rc_a_pwm < 1470 && rc_a_pwm >= 800) {
+        l_vel_cmd = (rc_a_pwm - 1470) * MAX_MANUAL_VEL / (1470 - 890);
+      } else {
+        l_vel_cmd = 0.0;
+      }
+      
+      if (rc_c_pwm > 1520 && rc_c_pwm <= 2200) {
+        r_vel_cmd = (rc_c_pwm - 1520) * MAX_MANUAL_VEL / (2100 - 1520);
+      } else if (rc_c_pwm < 1470 && rc_c_pwm >= 800) {
+        r_vel_cmd = (rc_c_pwm - 1470) * MAX_MANUAL_VEL / (1470 - 890);
+      } else {
+        r_vel_cmd = 0.0;
+      }
+    } else {
+      // watchdog (ROS2 mode)
+      if( (millis() - lastCalledAt) > WATCHDOG_TIMEOUT){
+        r_vel_cmd = 0;
+        l_vel_cmd = 0;
+      }
+    }
+
     //PID計算
     PID_control();
+    
     //エンコーダーデータを格納
     enc_msg.data.data[0] = count_l;
     enc_msg.data.data[1] = count_r;
-    // watchdog
-    if( (millis() - lastCalledAt) > WATCHDOG_TIMEOUT){
-      r_vel_cmd = 0;
-      l_vel_cmd = 0;
-    }
 
     curr_vel_msg.data.data[0] = l_vel;
     curr_vel_msg.data.data[1] = r_vel;

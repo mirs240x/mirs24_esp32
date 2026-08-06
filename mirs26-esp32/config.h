@@ -14,6 +14,17 @@
 #define ROS_DOMAIN_ID 90
 #define WATCHDOG_TIMEOUT 1000
 
+//プロポ用
+#define PIN_RC_A 21
+#define PIN_RC_B 22
+#define PIN_RC_C 23
+
+extern volatile uint16_t rc_a_pwm;
+extern volatile uint16_t rc_b_pwm;
+extern volatile uint16_t rc_c_pwm;
+
+#define MAX_MANUAL_VEL 1.0 // プロポ操作時の最大速度(m/s)
+
 //足回り速度制御用
 double RKP = 80.0;
 double RKI = 30.0;
