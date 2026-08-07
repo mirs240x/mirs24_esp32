@@ -2,7 +2,7 @@
 void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 {  
   RCLC_UNUSED(last_call_time);
-  if (timer != NULL) {
+  if (true) { // timer != NULL のチェックをスキップ
     if (rc_b_pwm > 1700) {
       if (rc_a_pwm > 1520 && rc_a_pwm <= 2200) {
         l_vel_cmd = (rc_a_pwm - 1520) * MAX_MANUAL_VEL / (2100 - 1520);
@@ -36,8 +36,8 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
 
     curr_vel_msg.data.data[0] = l_vel;
     curr_vel_msg.data.data[1] = r_vel;
-    rcl_publish(&enc_pub, &enc_msg, NULL);
-    rcl_publish(&curr_vel_pub, &curr_vel_msg, NULL);
+    // rcl_publish(&enc_pub, &enc_msg, NULL);         // 一時的にコメントアウト
+    // rcl_publish(&curr_vel_pub, &curr_vel_msg, NULL); // 一時的にコメントアウト
   }
 }
 

@@ -70,8 +70,10 @@ float prev_l_err = 0;
 //WatchDog用
 uint32_t lastCalledAt;
 
+unsigned long last_loop_time = 0;
+
 void setup() {
-  ros_setup();
+  // ros_setup(); // 一時的にコメントアウト
 
   encoder_open();
   vel_ctrl_set();
@@ -81,6 +83,11 @@ void setup() {
 }
 
 void loop() {
-  delay(10);
-  rclc_executor_spin_some(&executor, RCL_MS_TO_NS(100));
+  rclc_executor_spin_some(&executor, RCL_MS_TO_NS(100)); // 一時的にコメントアウト
+  
+  // 15ms周期で直接制御処理を呼び出す
+  if (millis() - last_loop_time >= 15) {
+    timer_callback(NULL, 0);
+    last_loop_time = millis();
+  }
 }

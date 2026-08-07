@@ -1,7 +1,3 @@
-volatile uint16_t rc_a_pwm = 1496;
-volatile uint16_t rc_b_pwm = 1496;
-volatile uint16_t rc_c_pwm = 1496;
-
 volatile unsigned long rc_a_start = 0;
 volatile unsigned long rc_b_start = 0;
 volatile unsigned long rc_c_start = 0;

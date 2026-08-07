@@ -14,9 +14,9 @@ void calculate_vel(){
   double left_distance = delta_left_rad * WHEEL_RADIUS;
   double right_distance = delta_right_rad * WHEEL_RADIUS;
 
-  // 現在の速度を計算
-  l_vel = left_distance / 0.1;
-  r_vel = right_distance / 0.1;
+  // 現在の速度を計算 (15ms間隔)
+  l_vel = left_distance / 0.015;
+  r_vel = right_distance / 0.015;
 }
 
 void PID_control(){
@@ -80,8 +80,9 @@ void vel_ctrl_set() {
   ledcAttach(PIN_PWM_R, pwmFrequency, pwmResolution);
   ledcAttach(PIN_PWM_L, pwmFrequency, pwmResolution);
 
-  curr_vel_msg.data.size = 2; // メッセージ配列のサイズを2に設定
-  curr_vel_msg.data.data = (double *)malloc(enc_msg.data.size * sizeof(double)); // 配列のメモリを確保
+  curr_vel_msg.data.capacity = 2;
+  curr_vel_msg.data.size = 2;
+  curr_vel_msg.data.data = (double *)malloc(curr_vel_msg.data.capacity * sizeof(double)); // 配列のメモリを確保
   curr_vel_msg.data.data[0] = 0;
   curr_vel_msg.data.data[1] = 0;
 }
