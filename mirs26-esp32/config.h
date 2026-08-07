@@ -15,13 +15,13 @@
 #define WATCHDOG_TIMEOUT 1000
 
 //プロポ用
-#define MR8_A 21
-#define MR8_B 22
-#define MR8_C 23
+// #define MR8_A 21
+// #define MR8_B 22
+// #define MR8_C 23
 
-volatile uint16_t rc_a_pwm = 1496;
-volatile uint16_t rc_b_pwm = 1496;
-volatile uint16_t rc_c_pwm = 1496;
+// volatile uint16_t rc_a_pwm = 1496;
+// volatile uint16_t rc_b_pwm = 1496;
+// volatile uint16_t rc_c_pwm = 1496;
 
 #define MAX_MANUAL_VEL 1.0 // プロポ操作時の最大速度(m/s)
 

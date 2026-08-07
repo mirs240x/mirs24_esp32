@@ -73,17 +73,17 @@ uint32_t lastCalledAt;
 unsigned long last_loop_time = 0;
 
 void setup() {
-  // ros_setup(); // 一時的にコメントアウト
+  ros_setup();
 
   encoder_open();
   vel_ctrl_set();
-  rc_setup();
+  // rc_setup();
   
   delay(500);
 }
 
 void loop() {
-  rclc_executor_spin_some(&executor, RCL_MS_TO_NS(100)); // 一時的にコメントアウト
+  rclc_executor_spin_some(&executor, RCL_MS_TO_NS(100)); 
   
   // 15ms周期で直接制御処理を呼び出す
   if (millis() - last_loop_time >= 15) {
