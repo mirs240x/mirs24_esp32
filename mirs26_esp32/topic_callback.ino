@@ -53,3 +53,27 @@ void param_Callback(const void * msgin){
   LKI = param_msg->lki;
   LKD = param_msg->lkd;
 }
+//
+// //ノードのタイマーコールバック関数
+// void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
+// {  
+//   RCLC_UNUSED(last_call_time);
+//   if (timer != NULL) {
+//     //PID計算
+//     PID_control();
+//     //エンコーダーデータを格納
+//     enc_msg.data.data[0] = count_l;
+//     enc_msg.data.data[1] = count_r;
+//     // watchdog
+//     if( (millis() - lastCalledAt) > WATCHDOG_TIMEOUT){
+//       r_vel_cmd = 0;
+//       l_vel_cmd = 0;
+//     }
+//
+//     curr_vel_msg.data.data[0] = l_vel;
+//     curr_vel_msg.data.data[1] = r_vel;
+//     rcl_publish(&enc_pub, &enc_msg, NULL);
+//     rcl_publish(&curr_vel_pub, &curr_vel_msg, NULL);
+//   }
+// }
+//

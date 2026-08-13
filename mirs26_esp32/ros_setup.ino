@@ -14,65 +14,65 @@ void ros_setup(){
   rosid_setup_jazzy();
 
   //サブスクライバ、パブリッシャー、サービスの宣言
-  rclc_publisher_init_default(
+  RCCHECK(rclc_publisher_init_default(
     &enc_pub,
     &node,
     ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32MultiArray),
     "/encoder"
-  );
+  ));
 
-  rclc_publisher_init_default(
+  RCCHECK(rclc_publisher_init_default(
     &curr_vel_pub,
     &node,
     ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Float64MultiArray),
     "/vel"
-  );
+  ));
 
-  rclc_subscription_init_default(
+  RCCHECK(rclc_subscription_init_default(
     &cmd_vel_sub,
     &node,
     ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, Twist),
     "/cmd_vel"
-  );
+  ));
   
-  rclc_subscription_init_default(
+  RCCHECK(rclc_subscription_init_default(
     &param_sub,
     &node,
     ROSIDL_GET_MSG_TYPE_SUPPORT(mirs_msgs, msg, BasicParam),
     "/params"
-  );
+  ));
   
-  rclc_service_init_default(
+  RCCHECK(rclc_service_init_default(
     &update_srv,
     &node,
     ROSIDL_GET_SRV_TYPE_SUPPORT(mirs_msgs, srv, ParameterUpdate),
     "/esp_update"
-  );
+  ));
 
-  rclc_service_init_default(
+  RCCHECK(rclc_service_init_default(
     &reset_srv,
     &node,
     ROSIDL_GET_SRV_TYPE_SUPPORT(mirs_msgs, srv, SimpleCommand),
     "/reset_encoder"
-  );
+  ));
 
   const uint32_t timer_timeout = 100;
 
-  rclc_timer_init_default(
+  RCCHECK(rclc_timer_init_default(
     &timer,
     &support,
     RCL_MS_TO_NS(timer_timeout),
     timer_callback
-  );
+  ));
 
   //イベント発生の設定（数字はイベントの発生点の数）
   //デフォルトの発生点はsubscriberが2(/cmd_vel,/params)、serviceが2(/reset,/update)、timerが1（定期実行）の合計5
-  rclc_executor_init(&executor, &support.context, 5, &allocator);
-  rclc_executor_add_subscription(&executor, &cmd_vel_sub, &cmd_vel_msg, &cmd_vel_Callback, ON_NEW_DATA);
-  rclc_executor_add_subscription(&executor, &param_sub, &param_msg, &param_Callback, ON_NEW_DATA);
-  rclc_executor_add_service(&executor, &update_srv, &update_req, &update_res, update_service_callback);
-  rclc_executor_add_service(&executor, &reset_srv, &reset_req, &reset_res, reset_service_callback);
-  rclc_executor_add_timer(&executor, &timer);
+  RCHECK(rclc_executor_init(&executor, &support.context, 5, &allocator));
+  RCHECK(rclc_executor_add_subscription(&executor, &cmd_vel_sub, &cmd_vel_msg, &cmd_vel_Callback, ON_NEW_DATA));
+  RCHECK(rclc_executor_add_subscription(&executor, &param_sub, &param_msg, &param_Callback, ON_NEW_DATA));
+  RCHECK(rclc_executor_add_service(&executor, &update_srv, &update_req, &update_res, update_service_callback));
+  RCHECK(rclc_executor_add_service(&executor, &reset_srv, &reset_req, &reset_res, reset_service_callback));
+  RCHECK(rclc_executor_add_timer(&executor, &timer));
 }
 
 /*    ROS_DOMAIN_ID 設定用                  */

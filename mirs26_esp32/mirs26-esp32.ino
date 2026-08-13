@@ -77,7 +77,6 @@ void setup() {
 
   encoder_open();
   vel_ctrl_set();
-  // rc_setup();
   
   delay(500);
 }
